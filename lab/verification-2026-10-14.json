@@ -2,7 +2,8 @@
   "kind": "verification-receipt",
   "local_tests": {
     "linux_arm64": 11,
-    "linux_amd64_emulated": 11
+    "linux_amd64_emulated": 11,
+    "linux_arm64_latest": 12
   },
   "lambda_base_container": "four fixture pairs pass; not an AWS invocation",
   "public_demo": "https://huggingface.co/spaces/cloudlabworks/agent-reliability-lab",
@@ -16,5 +17,58 @@
     "hf-live-browser.json": "4bc22cdb8b4b69f70e8943e2c2f419f1f68f929581a97f5cd40cf419e8cfad66",
     "hf-public-metadata.json": "87dcf3301d336413bec67a7de59358717fdfd36d71ad92bc9909f16932dc5ed5"
   },
-  "cloud_deployment": "pending"
+  "cloud_deployment": "AWS Lambda and Google Cloud Run verified; single synthetic suite per provider",
+  "google_cloudshell_tests": 12,
+  "google_cloud_run": {
+    "execution": "clw-reliability-lab-s59ql",
+    "completed": true,
+    "fixture_pairs": 4,
+    "trace_hashes_verified": 8,
+    "source_matches_local": true,
+    "image_digest": "sha256:b73639a0396805add93f38328d22b858fe52a131f35da33a54a8426fd6db2bf4"
+  },
+  "aws_lambda": {
+    "fixture_pairs": 4,
+    "trace_hashes_verified": 8,
+    "source_matches_local": true,
+    "deployed_zip_matches": true,
+    "reserved_concurrency_after_run": 0,
+    "function_url": false,
+    "event_source_mappings": 0,
+    "final_plan_changes": 0
+  },
+  "guard_tests": 4,
+  "cross_cloud_verification": {
+    "results": [
+      {
+        "provider": "google",
+        "fixture_pairs": 4,
+        "trace_hashes": 8,
+        "source_matches": true,
+        "runtime": {
+          "node": "v24.22.0",
+          "os": "linux",
+          "arch": "x64",
+          "platform": "google-cloud-run-job",
+          "platform_evidence": "Runtime environment declaration; cloud deployment receipt is required to corroborate it."
+        }
+      },
+      {
+        "provider": "aws",
+        "fixture_pairs": 4,
+        "trace_hashes": 8,
+        "source_matches": true,
+        "runtime": {
+          "node": "v24.21.0",
+          "os": "linux",
+          "arch": "arm64",
+          "platform": "aws-lambda",
+          "platform_evidence": "Runtime environment declaration; cloud deployment receipt is required to corroborate it."
+        }
+      }
+    ],
+    "awsCodeHashMatches": true,
+    "awsDisabled": true,
+    "awsPlanDrift": false
+  }
 }

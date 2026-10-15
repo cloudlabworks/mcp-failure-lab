@@ -4,7 +4,9 @@ These configurations have no cloud credentials and perform no deployment by them
 
 ## AWS
 
-Build the application and ZIP locally:
+Build the application and ZIP locally. The configuration uploads the ZIP to a private, public-access-blocked AES256 S3 code bucket; Lambda reads that object during deployment. This avoids an inline-upload request-size failure observed in Cloud Shell. `source_hash` tracks artifact changes: a multipart S3 ETag is not the file MD5.
+
+
 
 ```sh
 docker build -t mcp-failure-lab:cross-cloud-20261014 .
@@ -18,7 +20,7 @@ After checking the account, quota and saved plan, apply the plan and invoke once
 
 ```sh
 tofu -chdir=deploy/aws apply lab.tfplan
-aws lambda invoke --region us-west-2 --function-name clw-reliability-lab --cli-binary-format raw-in-base64-out --payload '{"action":"run-suite"}' artifacts/aws-suite.json
+bash scripts/aws-invoke-once.sh
 ```
 
 Require `FunctionError` absent from invoke metadata, `pass: true` in the result, and independently read the function configuration. A claimed `aws-lambda` runtime inside a JSON file alone is not verification. Keep the deployment receipt separate from public, synthetic result data.
@@ -54,9 +56,11 @@ After a reviewed plan is applied, execute `clw-reliability-lab` once with the si
 
 - AWS ZIP packaging, Terraform validation and container tests do not establish live-cloud behavior.
 - Managed IAM policy propagation, project permissions, organization policy and provider quotas can block apply.
-- A reservation of one Lambda execution can be unavailable on a low-quota account.
+- The Lambda is disabled at rest. The manual invocation script restores zero concurrency on success and ordinary errors, but cannot guarantee cleanup after a host crash or SIGKILL. Verify zero afterward; no scheduler or public trigger is configured.
 - The Google job needs a digest-pinned image in a reachable registry; registry setup is not hidden inside the job configuration.
 - Structured stdout must remain below Cloud Logging's entry limit; the current four-fixture suite is checked locally for size.
 - No credential is embedded in the source, package, generated sample, or report.
 
 Official runtime references: [Lambda runtimes](https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html), [Cloud Run contract](https://docs.cloud.google.com/run/docs/container-contract).
+
+AWS Cloud Shell has a small persistent-home quota. If provider installation exhausts it, set `TF_DATA_DIR=/tmp/clw-aws-tfdata` for init, plan and apply; keep state under the project and export it privately. Do not delete unrelated home data to make room.

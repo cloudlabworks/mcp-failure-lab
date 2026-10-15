@@ -4,7 +4,7 @@ An extension of MCP Failure Lab and Agent Trace Clinic. Change one reference-cli
 
 ## Current boundary
 
-Local, isolated Linux reference-client runs and a browser replay are implemented. AWS Lambda and Google Cloud Run Job configurations are supplied separately. A configuration validating is **not** a cloud deployment receipt. No model participates. No production agent or cloud-performance ranking is claimed.
+Local, isolated Linux reference-client runs and a browser replay are implemented. All four fixture pairs also passed on AWS Lambda ARM64 and Google Cloud Run AMD64; exported trace hashes and outcomes matched the local baseline. Both cloud configurations are included. A configuration validating is **not** a cloud deployment receipt. No model participates. No production agent or cloud-performance ranking is claimed.
 
 The public-facing UI is static. Loading it cannot execute a cloud job, call a model, or upload a trace. Its comparison file is read in the browser. The runtime label inside a result is only a declaration; independently verify a cloud invocation before describing a run as cloud-tested.
 
@@ -32,7 +32,7 @@ The test verifies expected outcomes, attempt counts and trace completeness. The 
 
 ## Portable cloud execution
 
-- **AWS:** `deploy/aws` creates an IAM-invoked Node.js 24 ARM64 Lambda and seven-day log group. No URL, API Gateway, scheduler, VPC, model access, or data store. One concurrent execution, 256 MiB, 60-second timeout. If the account cannot reserve concurrency, do not silently remove the reservation.
+- **AWS:** `deploy/aws` creates an IAM-invoked Node.js 24 ARM64 Lambda and seven-day log group. No URL, API Gateway, scheduler, VPC or model access. A private AES256 S3 bucket holds only the content-addressed deployment ZIP. Disabled at rest (reserved concurrency zero), 256 MiB, 60-second timeout. `scripts/aws-invoke-once.sh` opens one manual invocation window and restores zero on exit. During that window the account-wide quota applies; this is not a per-function cap of one. The tested account has a ten-execution quota, below the headroom needed for reserved concurrency.
 - **Google:** `deploy/gcp` creates a private Cloud Run Job with one task, one parallel task, zero retries, 1 CPU, 512 MiB and 60-second timeout. Its service account gets no application IAM roles. An existing dedicated project and digest-pinned image are inputs. No public service or scheduler.
 - **Architecture:** Cloud Run requires a Linux AMD64 image; local Apple Silicon success is not sufficient. Build and test `--platform linux/amd64`. Lambda uses the same pure-JS package on ARM64.
 - **Billing:** free-tier entitlement and remaining shared allowances must be checked in the actual account before apply. Neither a budget alert nor a max-instance setting is a monetary hard cap. No paid-plan upgrade is needed or automated here. The application makes no model/API calls.
