@@ -1,0 +1,46 @@
+# Agent Reliability Lab
+
+An extension of MCP Failure Lab and Agent Trace Clinic. Change one reference-client policy, replay the same synthetic fault, and inspect the before/after evidence.
+
+## Current boundary
+
+Local, isolated Linux reference-client runs and a browser replay are implemented. AWS Lambda and Google Cloud Run Job configurations are supplied separately. A configuration validating is **not** a cloud deployment receipt. No model participates. No production agent or cloud-performance ranking is claimed.
+
+The public-facing UI is static. Loading it cannot execute a cloud job, call a model, or upload a trace. Its comparison file is read in the browser. The runtime label inside a result is only a declaration; independently verify a cloud invocation before describing a run as cloud-tested.
+
+## Reproduce
+
+```sh
+docker build -t mcp-failure-lab:cross-cloud-20261014 .
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges mcp-failure-lab:cross-cloud-20261014 npm test
+mkdir -p artifacts
+docker run --rm --network none --read-only --cap-drop ALL --security-opt no-new-privileges mcp-failure-lab:cross-cloud-20261014 node lab/experiments.mjs > artifacts/local-suite.json
+cp artifacts/local-suite.json lab/web/sample.json
+npm run preview
+```
+
+Open http://127.0.0.1:8790. Choose a fixture, inspect both traces, or download the full result. The checked-in sample is a recorded local run, not live execution.
+
+| Experiment | Before | After | Acceptance |
+| --- | --- | --- | --- |
+| transient recovery | one attempt, two injected failures | three attempts | third attempt succeeds |
+| permanent failure | five attempts | two attempts | tool still fails, but client stops earlier |
+| deadline fit | 100 ms deadline, 400 ms delay | 2000 ms deadline | success within the larger deadline |
+| malformed control | one-attempt budget | five-attempt budget | protocol error stays terminal after one call |
+
+The test verifies expected outcomes, attempt counts and trace completeness. The UI verifies trace hashes before comparison. Hashes bind bytes, not truth or origin. Clinic heuristics can flag legitimate retries; that finding is deliberately retained even when the recovery fixture succeeds.
+
+## Portable cloud execution
+
+- **AWS:** `deploy/aws` creates an IAM-invoked Node.js 24 ARM64 Lambda and seven-day log group. No URL, API Gateway, scheduler, VPC, model access, or data store. One concurrent execution, 256 MiB, 60-second timeout. If the account cannot reserve concurrency, do not silently remove the reservation.
+- **Google:** `deploy/gcp` creates a private Cloud Run Job with one task, one parallel task, zero retries, 1 CPU, 512 MiB and 60-second timeout. Its service account gets no application IAM roles. An existing dedicated project and digest-pinned image are inputs. No public service or scheduler.
+- **Architecture:** Cloud Run requires a Linux AMD64 image; local Apple Silicon success is not sufficient. Build and test `--platform linux/amd64`. Lambda uses the same pure-JS package on ARM64.
+- **Billing:** free-tier entitlement and remaining shared allowances must be checked in the actual account before apply. Neither a budget alert nor a max-instance setting is a monetary hard cap. No paid-plan upgrade is needed or automated here. The application makes no model/API calls.
+
+See [deployment runbook](../deploy/README.md). The UI is published as a free [Hugging Face static Space](https://huggingface.co/spaces/cloudlabworks/agent-reliability-lab); it is independent of cloud runtime deployment.
+
+## Source and maintenance
+
+`vendor/clinic/PROVENANCE.json` pins and hashes the deterministic Clinic modules. Their MIT license is included. Experimental model code, paper-derived taxonomy text and old bake-off outputs are not included.
+
+Owner: Cloud Lab Works / Waku. Runtime entry point: `lab/experiments.mjs`; preview health: `/healthz`; checks: `npm test` inside the pinned container. Stop the loopback preview to undo the local service. Cloud teardown uses a reviewed OpenTofu destroy plan for this dedicated stack, preserving exported result files first.

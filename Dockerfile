@@ -4,5 +4,6 @@ COPY package.json package-lock.json ./
 RUN npm ci --ignore-scripts --no-audit --no-fund
 COPY --chown=node:node server.mjs runner.mjs ./
 COPY --chown=node:node test ./test
+COPY --chown=node:node lab ./lab
 USER node
 CMD ["node","server.mjs"]

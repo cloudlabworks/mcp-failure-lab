@@ -1,0 +1,14 @@
+{
+  "source": "Agent Trace Clinic",
+  "commit": "3464c74e403d76d040c7382fa4c37465f9fdd92a",
+  "license": "MIT",
+  "scope": "Deterministic modules only; optional model code, research text and historical bakeoff outputs excluded.",
+  "sha256": {
+    "analyse.js": "06e2f2a44ca84bed8aa3322af1ab7a4659d1db9a8ee1afc305738094e5694dd2",
+    "normalise.js": "435ba7ac3e05c14a341d080807975e4218c6852b97cecdf9f5fd2341d07c3f2b",
+    "detectors.js": "a0afa463f2f61acc1b3f4418f5050a295b21ffc354f0c4dbd2d24373a5592c7e",
+    "usage.js": "6b15acde51fce6555dffca2ca1489b7bdde1238aaf2d82839495597c210bced2",
+    "report.js": "d42c5211a864d93f049a534120bb6e085664d2813de9c77bf3b8ac7cf4f33340",
+    "LICENSE": "93296d2ea42ea4f9908f26a9d982e8cc038683a2e5e4925ce869c5b8bf40ad84"
+  }
+}

@@ -8,9 +8,11 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test test/*.test.mjs",
+    "test": "node --test test/*.test.mjs lab/test/*.test.mjs",
     "start": "node server.mjs",
-    "demo": "node runner.mjs"
+    "demo": "node runner.mjs",
+    "experiment": "node lab/experiments.mjs",
+    "preview": "node lab/preview.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.3.1",

@@ -85,3 +85,7 @@ Owner: Cloud Lab Works / Waku. Gherkin review has not been assigned or completed
 Before public release: source/dependency review, an independent test pass, and publication approval.
 Before cloud execution: bounded job budget, teardown, and measured runtime. No cloud account is required for this release.
 No telemetry or remote reporting. Generated reports stay in ignored `artifacts/`.
+
+## Agent Reliability Lab
+
+[Open the public demo](https://huggingface.co/spaces/cloudlabworks/agent-reliability-lab) or read the [experiment guide](lab/README.md). Four controlled before/after cases connect the official MCP reference client to deterministic Clinic inspection. The public sample is recorded local evidence, not a live cloud execution. [Cloud adapters and runbook](deploy/README.md) are included.

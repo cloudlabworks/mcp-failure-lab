@@ -1,0 +1,34 @@
+import { createRequire } from 'node:module';
+import { readFile, mkdir } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require=createRequire(import.meta.url);
+const {chromium}=require(process.argv[2]||'playwright');
+const browser=await chromium.launch({executablePath:process.env.CHROME_PATH||'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:1100}}),errors=[],external=[];
+page.on('pageerror',e=>errors.push(e.message));
+page.on('request',r=>{if(!r.url().startsWith('http://127.0.0.1:8790/'))external.push(r.url());});
+await page.goto('http://127.0.0.1:8790/');
+await page.waitForSelector('.grid');
+for(const id of ['transient-recovery','permanent-failure','deadline-fit','malformed-control']){
+  await page.selectOption('#fixture',id);assert.equal(await page.locator('.panel').count(),2);
+  assert.equal(await page.locator('.checks .fail').count(),0);
+}
+await page.selectOption('#fixture','transient-recovery');
+const sample=JSON.parse(await readFile(new URL('../lab/web/sample.json',import.meta.url),'utf8'));
+await page.setInputFiles('#upload',{name:'match.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(sample))});
+await page.waitForSelector('#comparison:not([hidden])');assert.equal(await page.locator('#comparison .pass').count(),4);
+const changed=structuredClone(sample);changed.experiments[0].before.trace.messages[0].content='tampered';
+await page.setInputFiles('#upload',{name:'changed.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(changed))});
+await page.waitForFunction(()=>document.getElementById('status').textContent.includes('integrity mismatch'));
+assert(await page.locator('#comparison').isHidden());
+const downloadPromise=page.waitForEvent('download');await page.click('#download');
+const dl=await downloadPromise;assert.equal(dl.suggestedFilename(),'reliability-evidence.json');
+await page.reload();await page.waitForSelector('.grid');
+await mkdir(new URL('../artifacts/',import.meta.url),{recursive:true});
+await page.screenshot({path:new URL('../artifacts/reliability-desktop.png',import.meta.url).pathname,fullPage:true});
+await page.setViewportSize({width:390,height:844});
+assert(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth));
+await page.screenshot({path:new URL('../artifacts/reliability-mobile.png',import.meta.url).pathname,fullPage:true});
+assert.deepEqual(errors,[]);assert.deepEqual(external,[]);
+console.log(JSON.stringify({fixtures:4,comparison:'4 matching cases',tamper:'rejected',download:'passed',mobileOverflow:false,pageErrors:errors,externalRequests:external}));
+await browser.close();
