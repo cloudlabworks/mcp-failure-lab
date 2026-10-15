@@ -7,7 +7,6 @@
   },
   "lambda_base_container": "four fixture pairs pass; not an AWS invocation",
   "public_demo": "https://huggingface.co/spaces/cloudlabworks/agent-reliability-lab",
-  "hf_commit": "18a16387be6878d2362e3fec683f0f3056999292",
   "evidence_sha256": {
     "cross-cloud-tests.log": "434798f10fb8b9363c6cc01810bc6795ae02f09cc43c63ac23349dc1786eb5de",
     "amd64-tests.log": "6590aa3bbbea0dd92256cb88baa62659ce2e5e799b93b4a21ba2b2bc6bfa824f",
@@ -70,5 +69,6 @@
     "awsCodeHashMatches": true,
     "awsDisabled": true,
     "awsPlanDrift": false
-  }
+  },
+  "hf_initial_commit": "18a16387be6878d2362e3fec683f0f3056999292"
 }
