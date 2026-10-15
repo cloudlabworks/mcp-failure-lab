@@ -25,6 +25,18 @@ Require `FunctionError` absent from invoke metadata, `pass: true` in the result,
 
 ## Google Cloud
 
+### Dedicated-project bootstrap
+
+Cloud Shell's `terraform` can be an installation stub. Use an installed, checksum-verified OpenTofu binary. Cloud Shell ADC can charge API quota to an unrelated selected project; both providers explicitly use the dedicated lab project instead.
+
+For a new project, create just the project with `gcloud projects create`, enable `cloudresourcemanager.googleapis.com`, `cloudbilling.googleapis.com` and `billingbudgets.googleapis.com` **in that new project**, then import it as `google_project.lab` in `deploy/gcp-bootstrap`. This bootstrap exception avoids enabling management APIs in a home-automation project. The project has no default VPC provisioned here.
+
+Supply the billing account privately and plan with `-var=attach_billing=true`. Review before applying. Keep `attach_billing=true` in an ignored `terraform.tfvars` after adoption; the default false is a bootstrap state, not a steady-state configuration. Do not apply a later plan that detaches billing or destroys the registry unintentionally.
+
+The bootstrap owns project APIs, one registry, and a scoped unexpected-charge alert. The runtime stack owns only its service account and job; it does not manage the same APIs in a second state. The alert is not a cap or permission to spend. Check shared free allowances before pushing an image or running a job. Export state to a private backup after apply.
+
+### Runtime
+
 Build and test an AMD64 image:
 
 ```sh

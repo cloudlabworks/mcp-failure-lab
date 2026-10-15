@@ -14,13 +14,10 @@ variable "image" {
   }
 }
 provider "google" {
-  project = var.project_id
-  region  = var.region
-}
-resource "google_project_service" "run" {
-  project            = var.project_id
-  service            = "run.googleapis.com"
-  disable_on_destroy = false
+  project               = var.project_id
+  region                = var.region
+  billing_project       = var.project_id
+  user_project_override = true
 }
 resource "google_service_account" "lab" {
   account_id   = "clw-reliability-lab"
@@ -30,7 +27,6 @@ resource "google_cloud_run_v2_job" "lab" {
   name                = "clw-reliability-lab"
   location            = var.region
   deletion_protection = false
-  depends_on          = [google_project_service.run]
   template {
     task_count  = 1
     parallelism = 1
@@ -41,7 +37,7 @@ resource "google_cloud_run_v2_job" "lab" {
       containers {
         image   = var.image
         command = ["node"]
-        args    = ["lab/experiments.mjs"]
+        args    = ["lab/cloud-run.mjs"]
         resources { limits = { cpu = "1", memory = "512Mi" } }
       }
     }

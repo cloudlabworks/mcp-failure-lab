@@ -44,3 +44,13 @@ See [deployment runbook](../deploy/README.md). The UI is published as a free [Hu
 `vendor/clinic/PROVENANCE.json` pins and hashes the deterministic Clinic modules. Their MIT license is included. Experimental model code, paper-derived taxonomy text and old bake-off outputs are not included.
 
 Owner: Cloud Lab Works / Waku. Runtime entry point: `lab/experiments.mjs`; preview health: `/healthz`; checks: `npm test` inside the pinned container. Stop the loopback preview to undo the local service. Cloud teardown uses a reviewed OpenTofu destroy plan for this dedicated stack, preserving exported result files first.
+
+## Deployment lessons
+
+1. **Test the target architecture.** Apple Silicon's ARM64 success does not establish Cloud Run's AMD64 compatibility.
+2. **Treat API quota context as configuration.** Cloud Shell can silently use the selected home project for management API quota. Bootstrap the dedicated project, import it, and point the providers at it explicitly.
+3. **Declare API dependencies.** Cloud Run, Artifact Registry, IAM and Logging are explicit bootstrap resources. A valid Terraform schema does not mean those APIs are enabled.
+4. **Preserve trace bytes through logging.** `lab/cloud-run.mjs` wraps the result in a base64 JSON envelope. Log-export key ordering then cannot change nested trace hashes. The decoder checks the envelope and the browser still checks each trace hash.
+5. **Separate evidence from the verdict.** A successful deployment, a passing fixture, a Clinic heuristic and a production reliability claim are four different things. This project demonstrates the first two only when backed by the corresponding receipt.
+
+Cloud Shell's Docker daemon could not reach Artifact Registry while curl could. The verified image was transported with Google's maintained `crane` client using the existing gcloud credential helper. No credential was copied into the image or public evidence. Do not infer a general network rule from that one environment.
