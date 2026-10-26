@@ -36,4 +36,6 @@ The displayed baseline is a recorded local Linux ARM64 run. Cloud Run is a priva
 
 [Download the source snapshot](source.tar.gz), extract it, and follow `lab/README.md`. Snapshot revision: `SOURCE_COMMIT`. It includes fixed fixtures, pinned dependencies, cloud result files, tests and AWS/Google infrastructure configurations, but no git history, credentials, private state or account-specific variables. [File checksums](manifest.json).
 
+The same runs (local, AWS and Google, before and after each policy change) as a Hugging Face dataset: [cloudlabworks/mcp-failure-lab-traces](https://huggingface.co/datasets/cloudlabworks/mcp-failure-lab-traces), 24 rows with traces and Clinic finding ids.
+
 Built by [Cloud Lab Works](https://cloudlabworks.dev). MIT license. Deterministic Clinic modules retain their license and pinned provenance. Deployment lessons are in the source guide.
