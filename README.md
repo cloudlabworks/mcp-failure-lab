@@ -1,7 +1,7 @@
 # MCP Failure Lab
 
 A deliberately faulty MCP server and a bounded reference-client harness.
-Local preview v0.1.0. Built on the official MCP TypeScript SDK **2.3.1**, not a replacement protocol implementation.
+v0.1.0, MIT. Built on the official MCP TypeScript SDK **2.3.1**, not a replacement protocol implementation.
 
 ## Try it
 

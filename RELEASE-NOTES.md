@@ -1,4 +1,14 @@
-# Local preview receipt — 2026-10-14
+# Release notes
+
+## v0.1.0 — public release, 2026-10-25
+
+- Published at https://github.com/cloudlabworks/mcp-failure-lab under MIT.
+- zod pinned to 4.6.7 (was 4.1.12) to clear a high-severity npm advisory (memory exhaustion on oversized constrained collections); the official SDK 2.3.1 already resolves 4.6.7. `npm audit --omit=dev`: 0 vulnerabilities on 2026-10-25; 12/12 tests pass.
+- Vendored Clinic provenance now cites the published Agent Trace Clinic commit `ca20b8f` (same file hashes; the Clinic history was re-authored before publication).
+- The GCP bootstrap no longer defaults `project_id`; pass your own.
+- Pre-publication checks: two secret scanners over full history (pattern grep and gitleaks) clean; CI runs on GitHub-hosted runners with read-only permissions.
+
+## Local preview receipt — 2026-10-14
 
 Status: local development release only. No public remote or cloud job.
 Self-review: first local commit; no claim of independent review.

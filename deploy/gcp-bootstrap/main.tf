@@ -5,7 +5,10 @@ terraform {
   }
 }
 variable "billing_account" { type = string }
-variable "project_id" { default = "clw-reliability-20261014" }
+variable "project_id" {
+  type        = string
+  description = "New, dedicated Google Cloud project ID for the lab"
+}
 variable "attach_billing" {
   type    = bool
   default = false

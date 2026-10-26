@@ -1,6 +1,6 @@
 {
   "source": "Agent Trace Clinic",
-  "commit": "3464c74e403d76d040c7382fa4c37465f9fdd92a",
+  "commit": "ca20b8fd9a05e017d5b5eaeb8d25d4cefbdc5df0",
   "license": "MIT",
   "scope": "Deterministic modules only; optional model code, research text and historical bakeoff outputs excluded.",
   "sha256": {
