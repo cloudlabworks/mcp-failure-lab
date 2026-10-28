@@ -1,5 +1,7 @@
 # MCP Failure Lab
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23720942.svg)](https://doi.org/10.5281/zenodo.23720942)
+
 A deliberately faulty MCP server and a bounded reference-client harness.
 v0.1.0, MIT. Built on the official MCP TypeScript SDK **2.3.1**, not a replacement protocol implementation.
 
@@ -89,3 +91,23 @@ No telemetry or remote reporting. Generated reports stay in ignored `artifacts/`
 ## Agent Reliability Lab
 
 [Open the public demo](https://huggingface.co/spaces/cloudlabworks/agent-reliability-lab) or read the [experiment guide](lab/README.md). Four controlled before/after cases connect the official MCP reference client to deterministic Clinic inspection. The public sample is recorded local evidence, not a live cloud execution. [Cloud adapters and runbook](deploy/README.md) are included.
+
+## Citation
+
+If you use this project, please cite the accompanying preprint:
+[MCP Failure Lab: Reproducible Tool-Failure Fixtures and Cross-Platform Traces for Testing Agent Reliability](https://doi.org/10.5281/zenodo.23720942). DOI: [10.5281/zenodo.23720942](https://doi.org/10.5281/zenodo.23720942).
+See the [paper page](https://cloudlabworks.dev/papers/mcp-failure-lab) for the abstract and PDF.
+
+```bibtex
+@techreport{alvord2026mcp,
+  author = {Alvord, Alex},
+  title = {{MCP Failure Lab: Reproducible Tool-Failure Fixtures and Cross-Platform Traces for Testing Agent Reliability}},
+  institution = {CloudLab Works},
+  publisher = {Zenodo},
+  year = {2026},
+  month = oct,
+  type = {Preprint},
+  doi = {10.5281/zenodo.23720942},
+  url = {https://doi.org/10.5281/zenodo.23720942}
+}
+```
