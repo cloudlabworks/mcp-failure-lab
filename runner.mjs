@@ -1,9 +1,26 @@
 #!/usr/bin/env node
-import { Client } from '@modelcontextprotocol/client';
+import { Client, SdkErrorCode } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 const serverPath = fileURLToPath(new URL('./server.mjs',import.meta.url));
+const outcomeByCode = new Map([
+  [SdkErrorCode.RequestTimeout,'timeout'],
+  [SdkErrorCode.ConnectionClosed,'disconnected'],
+  [SdkErrorCode.NotConnected,'disconnected'],
+  [-32001,'timeout'] // SDK 1.x ErrorCode.RequestTimeout
+]);
+const sdkCodes = new Set(Object.values(SdkErrorCode));
+// SDK 2.x reports transport failures with text codes. Classify by code first; match the
+// message only when the error carries no SDK code (plain transport or remote errors).
+export function classifyError(error) {
+  const code = error?.code;
+  if (outcomeByCode.has(code)) return outcomeByCode.get(code);
+  if (sdkCodes.has(code)) return 'protocol_error';
+  const message = typeof error?.message === 'string' ? error.message : '';
+  return /timed out|timeout/i.test(message) ? 'timeout' :
+    /closed|disconnect/i.test(message) ? 'disconnected' : 'protocol_error';
+}
 export async function runScenario({scenario='healthy',timeoutMs=2000,maxAttempts=1,delayMs=1000,failures=2}={}) {
   if (!Number.isInteger(timeoutMs) || timeoutMs < 10 || timeoutMs > 10000 ||
       !Number.isInteger(maxAttempts) || maxAttempts < 1 || maxAttempts > 5) throw new RangeError('Invalid deadline or attempt budget');
@@ -33,9 +50,8 @@ export async function runScenario({scenario='healthy',timeoutMs=2000,maxAttempts
         if (!result.isError) break;
         // Only explicit tool-level failures are eligible for bounded retry.
       } catch (error) {
-        outcome = error.code === -32001 || /timed out|timeout/i.test(error.message) ? 'timeout' :
-          /closed|disconnect/i.test(error.message) ? 'disconnected' : 'protocol_error';
-        attempts.push({attempt,outcome,elapsed_ms:Math.round(performance.now()-start),error_code:error.code ?? null});
+        outcome = classifyError(error);
+        attempts.push({attempt,outcome,elapsed_ms:Math.round(performance.now()-start),error_code:error?.code ?? null});
         messages.push({role:'tool',tool_call_id:id,content:'Error: reference client observed ' + outcome,is_error:true});
         break;
       }

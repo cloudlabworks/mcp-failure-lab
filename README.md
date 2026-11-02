@@ -47,6 +47,7 @@ The transport wrapper corrupts **result shape**, not JSON framing; truncated fra
 Configuration is read at process startup. Scenarios reset per process.
 `LAB_DELAY_MS`: integer 0–10000 (default 1000).
 `LAB_FAILURES`: integer 0–10 (default 2).
+Values must be plain decimal digits; an unset or empty variable uses the default, and anything else (`0x10`, `1e3`, ` 7`) stops the server with exit code 2.
 The reference client retries only explicit tool errors, at most five attempts; protocol errors, timeouts and disconnects stop immediately.
 The harness's tool-call deadline is 10–10000 ms; SDK connection/discovery deadlines are separate.
 Retries intentionally have no backoff so the generated fixture exposes repeated calls; this is not recommended production retry policy.

@@ -8,7 +8,7 @@ cp lab/web/index.html lab/web/app.js lab/web/style.css lab/web/sample.json LICEN
 cp lab/evidence/google-suite.json lab/evidence/aws-suite.json artifacts/hf-space/
 clw_revision=$(git rev-parse HEAD)
 sed "s/SOURCE_COMMIT/$clw_revision/" deploy/huggingface/README.md > artifacts/hf-space/README.md
-git archive --format=tar.gz --prefix=agent-reliability-lab/ -o artifacts/hf-space/source.tar.gz HEAD Dockerfile .dockerignore .gitignore LICENSE README.md package.json package-lock.json server.mjs runner.mjs test lab deploy scripts
+git archive --format=tar.gz --prefix=agent-reliability-lab/ -o artifacts/hf-space/source.tar.gz HEAD Dockerfile .dockerignore .gitignore LICENSE README.md package.json package-lock.json server.mjs runner.mjs config.mjs test lab deploy scripts
 python3 - <<'PY'
 from pathlib import Path
 import hashlib,json
