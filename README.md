@@ -1,5 +1,7 @@
 # MCP Failure Lab
 
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/cloudlabworks/mcp-failure-lab/badge)](https://scorecard.dev/viewer/?uri=github.com/cloudlabworks/mcp-failure-lab)
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23720942.svg)](https://doi.org/10.5281/zenodo.23720942)
 
 A deliberately faulty MCP server and a bounded reference-client harness.
