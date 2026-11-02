@@ -16,7 +16,7 @@ export async function runScenario({scenario='healthy',timeoutMs=2000,maxAttempts
   let transportErrors = 0;
   client.onerror = () => { transportErrors++; };
   let outcome = 'not_run';
-  let connected = false;
+  let connected; // set once connect() succeeds; a failed connect throws past the return
   try {
     await client.connect(transport); connected = true;
     const listed = await client.listTools();
