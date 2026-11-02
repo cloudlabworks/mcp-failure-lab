@@ -1,5 +1,11 @@
 # Release notes
 
+## Unreleased
+
+- Property-based tests (`test/property.test.js`, fast-check 4.10.2) for configuration parsing and error classification.
+- Fix: `LAB_DELAY_MS` and `LAB_FAILURES` accepted strings such as `0x10`, `1e3` and ` 7 `, and an empty value became 0 instead of the default. Parsing now lives in `config.mjs`: plain decimal digits only, empty means default.
+- Fix: the reference client classifies timeouts and disconnects by the SDK 2.x error code (`REQUEST_TIMEOUT`, `CONNECTION_CLOSED`, `NOT_CONNECTED`) before falling back to message matching. A timeout whose message did not contain "timeout" was reported as `protocol_error`.
+
 ## v0.1.1, 2026-11-02
 
 - Listed in the Official MCP Registry as `io.github.cloudlabworks/mcp-failure-lab`; `server.json` added.

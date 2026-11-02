@@ -2,16 +2,14 @@
 import { McpServer } from '@modelcontextprotocol/server';
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import * as z from 'zod/v4';
+import { parseLabConfig } from './config.mjs';
 
-const scenarios = new Set(['healthy','tool-error','transient-error','delay','malformed','disconnect']);
-const scenario = process.env.LAB_SCENARIO || 'healthy';
-const delayMs = Number(process.env.LAB_DELAY_MS ?? 1000);
-const failures = Number(process.env.LAB_FAILURES ?? 2);
-if (!scenarios.has(scenario) || !Number.isInteger(delayMs) || delayMs < 0 || delayMs > 10000 ||
-    !Number.isInteger(failures) || failures < 0 || failures > 10) {
-  console.error('Invalid LAB_SCENARIO, LAB_DELAY_MS (0..10000), or LAB_FAILURES (0..10).');
+const config = parseLabConfig(process.env);
+if (!config.ok) {
+  console.error(config.error);
   process.exit(2);
 }
+const {scenario,delayMs,failures} = config;
 const server = new McpServer({name:'mcp-failure-lab',version:'0.1.0'});
 let calls = 0;
 server.registerTool('lab_probe', {

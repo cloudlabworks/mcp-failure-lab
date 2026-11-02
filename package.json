@@ -8,7 +8,7 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test test/*.test.mjs lab/test/*.test.mjs",
+    "test": "node --test test/*.test.mjs test/*.test.js lab/test/*.test.mjs",
     "start": "node server.mjs",
     "demo": "node runner.mjs",
     "experiment": "node lab/experiments.mjs",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.14.0",
+    "fast-check": "4.10.2",
     "globals": "^17.13.0"
   },
   "overrides": {

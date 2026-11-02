@@ -30,7 +30,7 @@ export const fixtures = Object.freeze([
 ]);
 const digest = text => createHash('sha256').update(text).digest('hex');
 export async function sourceDigest() {
-  const paths=['server.mjs','runner.mjs','package-lock.json','lab/experiments.mjs',
+  const paths=['server.mjs','runner.mjs','config.mjs','package-lock.json','lab/experiments.mjs',
     'lab/vendor/clinic/analyse.js','lab/vendor/clinic/normalise.js','lab/vendor/clinic/detectors.js','lab/vendor/clinic/usage.js'];
   return digest((await Promise.all(paths.map(async p=>p+'\n'+digest(await readFile(new URL('../'+p,import.meta.url)))))).join('\n'));
 }
