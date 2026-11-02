@@ -1,5 +1,11 @@
 # Release notes
 
+## v0.1.1, 2026-11-02
+
+- Listed in the Official MCP Registry as `io.github.cloudlabworks/mcp-failure-lab`; `server.json` added.
+- Container image published to `ghcr.io/cloudlabworks/mcp-failure-lab:0.1.1` (linux/amd64, linux/arm64) by the `publish-mcp` workflow on version tags, with the `io.modelcontextprotocol.server.name` ownership label.
+- No server or harness behavior changes.
+
 ## v0.1.0 — public release, 2026-10-25
 
 - Published at https://github.com/cloudlabworks/mcp-failure-lab under MIT.

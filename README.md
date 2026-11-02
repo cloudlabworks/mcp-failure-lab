@@ -24,6 +24,12 @@ The test command exits nonzero on a regression; the demo command emits observati
 
 For local development: `npm ci --ignore-scripts`, then `npm test`.
 
+From the published image (Official MCP Registry: `io.github.cloudlabworks/mcp-failure-lab`):
+
+```sh
+docker run -i --rm -e LAB_SCENARIO=tool-error ghcr.io/cloudlabworks/mcp-failure-lab:0.1.1
+```
+
 ## Faults
 
 | LAB_SCENARIO | Injected behavior | Reference-client expectation |
