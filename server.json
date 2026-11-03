@@ -8,11 +8,11 @@
     "source": "github"
   },
   "websiteUrl": "https://github.com/cloudlabworks/mcp-failure-lab",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "packages": [
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/cloudlabworks/mcp-failure-lab:0.1.1",
+      "identifier": "ghcr.io/cloudlabworks/mcp-failure-lab:0.1.2",
       "transport": {
         "type": "stdio"
       },
