@@ -1,7 +1,8 @@
 # Release notes
 
-## Unreleased
+## v0.1.2, 2026-11-02
 
+- Signed releases: the `publish-mcp` workflow now records GitHub artifact attestations (Sigstore-signed SLSA build provenance) for the container image, pushed to ghcr.io beside it, and for a source tarball. Each version tag creates a GitHub Release with `mcp-failure-lab-<version>.tar.gz` and its provenance bundle `mcp-failure-lab-<version>.tar.gz.intoto.jsonl`. See "Verifying a release" in the README.
 - Property-based tests (`test/property.test.js`, fast-check 4.10.2) for configuration parsing and error classification.
 - Fix: `LAB_DELAY_MS` and `LAB_FAILURES` accepted strings such as `0x10`, `1e3` and ` 7 `, and an empty value became 0 instead of the default. Parsing now lives in `config.mjs`: plain decimal digits only, empty means default.
 - Fix: the reference client classifies timeouts and disconnects by the SDK 2.x error code (`REQUEST_TIMEOUT`, `CONNECTION_CLOSED`, `NOT_CONNECTED`) before falling back to message matching. A timeout whose message did not contain "timeout" was reported as `protocol_error`.

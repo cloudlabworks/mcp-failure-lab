@@ -27,8 +27,19 @@ For local development: `npm ci --ignore-scripts`, then `npm test`.
 From the published image (Official MCP Registry: `io.github.cloudlabworks/mcp-failure-lab`):
 
 ```sh
-docker run -i --rm -e LAB_SCENARIO=tool-error ghcr.io/cloudlabworks/mcp-failure-lab:0.1.1
+docker run -i --rm -e LAB_SCENARIO=tool-error ghcr.io/cloudlabworks/mcp-failure-lab:0.1.2
 ```
+
+### Verifying a release
+
+From v0.1.2, each release has build provenance signed through Sigstore by the `publish-mcp` workflow. With the GitHub CLI:
+
+```sh
+gh attestation verify oci://ghcr.io/cloudlabworks/mcp-failure-lab:0.1.2 --repo cloudlabworks/mcp-failure-lab
+gh attestation verify mcp-failure-lab-0.1.2.tar.gz --repo cloudlabworks/mcp-failure-lab
+```
+
+The second command checks the source tarball from the GitHub Release. To verify offline, add `--bundle mcp-failure-lab-0.1.2.tar.gz.intoto.jsonl` (the provenance file attached to the same release).
 
 ## Faults
 
