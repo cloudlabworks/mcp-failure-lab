@@ -2,6 +2,7 @@
 
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/cloudlabworks/mcp-failure-lab/badge)](https://scorecard.dev/viewer/?uri=github.com/cloudlabworks/mcp-failure-lab)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/16205/badge)](https://www.bestpractices.dev/projects/16205)
+[![cloudlabworks/mcp-failure-lab MCP server](https://glama.ai/mcp/servers/cloudlabworks/mcp-failure-lab/badges/score.svg)](https://glama.ai/mcp/servers/cloudlabworks/mcp-failure-lab)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23720942.svg)](https://doi.org/10.5281/zenodo.23720942)
 
